@@ -15,9 +15,40 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  // ajoute les champs que tu souhaites
+  id        Int       @id @default(autoincrement())
+  name      String?
+  email     String?   @unique
+  sessions  SessionUser[]
+  tracksAdded Track[]
+  createdAt DateTime  @default(now())
+}
+
+model Session {
+  id        Int           @id @default(autoincrement())
+  code      Int        @unique
+  createdAt DateTime      @default(now())
+  users     SessionUser[]
+  tracks    Track[]
+}
+
+model SessionUser {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  session    Session  @relation(fields: [sessionId], references: [id])
+  sessionId  Int
+  joinedAt   DateTime @default(now())
+}
+
+model Track {
+  id         Int      @id @default(autoincrement())
+  title      String
+  artist     String
+  url        String
+  session    Session  @relation(fields: [sessionId], references: [id])
+  sessionId  Int
+  addedAt    DateTime @default(now())
+  addedBy    User?    @relation(fields: [addedById], references: [id])
+  addedById  Int?
 }
 
