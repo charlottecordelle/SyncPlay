@@ -45,7 +45,7 @@ model Track {
   id         Int      @id @default(autoincrement())
   title      String
   artist     String
-  url        String
+  spotifyId  String
   session    Session  @relation(fields: [sessionId], references: [id])
   sessionId  Int
   addedAt    DateTime @default(now())
